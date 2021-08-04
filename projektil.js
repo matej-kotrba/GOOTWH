@@ -44,7 +44,11 @@ class BombaHozena {
         for (var i in platformy) {
             if (this.x <= platformy[i].x + platformy[i].w && this.x + this.w >= platformy[i].x && this.y <= platformy[i].y + platformy[i].h
                 && this.y + this.h >= platformy[i].y) {
+                    if (platformy[i].type == "dvere" && platformy[i].otevreno) {}
+                    else {
                     this.vybuch()
+                    }
+
                 //c.drawImage(this.obrazek, this.x - this.w, this.y - this.h, 80, 80)
                 //projektily.splice(projektily.indexOf(this), 1)
             }

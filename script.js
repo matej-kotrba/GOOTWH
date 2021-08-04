@@ -148,17 +148,18 @@ window.addEventListener("wheel", function (s) {
     console.log(s)
     if (s.deltaY > 0) {
         // dolu
+        inventar.vyber++
+        if (inventar.vyber > 4){
+            inventar.vyber = 0
+        }
+        
+    }   
+    else if (s.deltaY < 0) {
+        // nahoru
         inventar.vyber--
         if (inventar.vyber < 0){
             inventar.vyber = 4
         }
-    }   
-    else if (s.deltaY < 0) {
-        // nahoru
-        inventar.vyber++
-        if (inventar.vyber > 4){
-            inventar.vyber = 0
-        } 
     }
     else {
         console.log('kys')
@@ -172,6 +173,8 @@ canvas.onmousemove = function(h) {
 }
 
 canvas.addEventListener("mousedown", function(h) {
-    hrac.klik = {x: h.offsetX, y: h.offsetY}
-    console.log(hrac.klik)
+    var klik = {x: h.offsetX, y: h.offsetY}
+    for (var d in tlacitka) {
+    tlacitka[d].kliknuti(klik)
+    }
 }) 

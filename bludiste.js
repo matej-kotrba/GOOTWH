@@ -4,12 +4,18 @@ class Bludiste {
         this.y = y
         this.w = w
         this.h = h
+        this.image = new Image()
+        this.image.src = "zed.png"
         this.type = "platforma"
+        
     }
 
     vykresleni() {
-        c.fillStyle = "rgb(143, 143, 143)"
-        c.fillRect(this.x, this.y, this.w, this.h)
+        //var pat = c.createPattern(this.image, 'repeat')
+        //c.fillStyle = pat
+        c.drawImage(this.image, this.x, this.y, this.w, this.h)
+        //c.fillStyle = "rgb(143, 143, 143)"
+        //c.fillRect(this.x, this.y, this.w, this.h)
     }
 
     kolize() {
@@ -30,6 +36,7 @@ class Bludiste {
         }
 
     }
+    
 }
 
 class Dvere {
@@ -161,7 +168,7 @@ class Cil {
             c.fill();
             c.stroke();
             c.restore();
-            c.globalAlpha -= 0.1
+            //c.globalAlpha -= 0.1
             this.r += 0.05
             this.r1 += 0.05
             this.r2 += 0.05
@@ -197,8 +204,11 @@ class Cil {
         }
         if (hrac.x + hrac.w >= this.x - 20 && hrac.x <= this.x + 250 + 20 && hrac.y + hrac.h >= this.y - 20 && hrac.y <= this.y + 200 + 20 && waifus.length == 0
             && hrac.ee) {
+            skore = skore + (Math.round(10 * (levelTime / 60))) / 10
             huraFamfaraVyhralJsi = true
-            levelsCompleted++
+            if (levelsCompleted == lokaceLevely) {
+                levelsCompleted++
+            }
         }
     }
 
