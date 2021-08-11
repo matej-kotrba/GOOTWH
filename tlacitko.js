@@ -175,17 +175,48 @@ class Plamen {
     }
 
     vykresleni() {
-        if (this.cas % 6 == 0) {
+        if (this.cas % 6 < dt2) {
             this.pocetPlamen++
             if (this.pocetPlamen > 14) {
                 this.pocetPlamen = 0
             }
         }
-        this.duration--
+        this.duration -= dt
         if (this.duration > 0) {
             c.drawImage(this.images[this.pocetPlamen], this.x, this.y, this.w, this.h)
         }
-        this.cas++
+        this.cas += dt
     }
 
+}
+
+class Portal {
+    constructor(x,y,duration) {
+        this.x = x
+        this.y = y
+        this.w = 150
+        this.h = 150
+        this.duration = duration
+        this.cas = 0
+        this.pocet = 0
+        this.images = []
+        for (var o = 0; o < 6; o++) {
+            this.images.push(new Image())
+            this.images[o].src = "./portal/portal" + o + ".png"
+        }
+    }
+
+    vykresleni() {
+        if (this.cas % 6 < dt2) {
+            this.pocet++
+            if (this.pocet > 5) {
+                this.pocet = 0
+            }
+        }
+        this.duration -= dt
+        if (this.duration > 0) {
+            c.drawImage(this.images[this.pocet], this.x, this.y, this.w, this.h)
+        }
+        this.cas += dt
+    }
 }

@@ -7,7 +7,7 @@ class Bludiste {
         this.image = new Image()
         this.image.src = "zed.png"
         this.type = "platforma"
-        
+
     }
 
     vykresleni() {
@@ -36,7 +36,7 @@ class Bludiste {
         }
 
     }
-    
+
 }
 
 class Dvere {
@@ -68,10 +68,10 @@ class Dvere {
 
     kolize() {
         if (this.cas > 0) {
-            this.cas--
+            this.cas -= dt
         }
         if (hrac.x + hrac.w >= this.x - 20 && hrac.x <= this.x + this.w + 20 && hrac.y + hrac.h >= this.y - 20 && hrac.y <= this.y + this.h + 20) {
-            c.fillStyle = "rgb(27, 27, 27)"
+            c.fillStyle = "rgb(68, 68, 68)"
             c.fillRect(hrac.x + 5, hrac.y - 50, hrac.w - 10, 30)
             c.fillStyle = "white"
             c.font = "20px Arial"
@@ -80,7 +80,7 @@ class Dvere {
         }
 
         if (hrac.x + hrac.w >= this.x - 20 && hrac.x <= this.x + this.w + 20 && hrac.y + hrac.h >= this.y - 20 && hrac.y <= this.y + this.h + 20 && hrac.ee
-            && this.cas == 0) {
+            && this.cas <= 0) {
             if (this.otevreno == false) {
                 this.otevreno = true
                 this.cas = 60
@@ -194,8 +194,8 @@ class Cil {
         c.globalAlpha = 1
 
         c.drawImage(this.image, this.x - 115, this.y - 140, 250, 200)
-        if (hrac.x + hrac.w >= this.x - 20 && hrac.x <= this.x + 250 + 20 && hrac.y + hrac.h >= this.y - 20 && hrac.y <= this.y + 200 + 20 && waifus.length == 0) {
-            c.fillStyle = "rgb(27, 27, 27)"
+        if (hrac.x + hrac.w >= this.x - 20 && hrac.x <= this.x + 20 && hrac.y + hrac.h >= this.y - 20 && hrac.y <= this.y + 200 + 20 && waifus.length == 0) {
+            c.fillStyle = "rgb(68, 68, 68)"
             c.fillRect(hrac.x + 5, hrac.y - 50, hrac.w - 10, 30)
             c.fillStyle = "white"
             c.font = "20px Arial"
@@ -214,5 +214,62 @@ class Cil {
 
     kolize() {
 
+    }
+}
+
+class Scroll {
+    constructor(x, y, text) {
+        this.x = x
+        this.y = y
+        this.w = 75
+        this.h = 75
+        this.text = text
+        this.showScroll = false
+        this.type = "scroll"
+        this.image = new Image()
+        this.image.src = "scroll.png"
+        this.scrolly = new Image()
+        this.scrolly.src = text
+    }
+
+    vykresleni() {
+
+        c.drawImage(this.image, this.x, this.y, this.w, this.h)
+        for (var v = 0; v < 10; v++) {
+            c.fillStyle = "whitesmoke"
+            c.globalAlpha = 0.08
+            c.beginPath();
+            c.arc(this.x + this.w / 2, this.y + this.h / 2, 4 * v, 0, 2 * Math.PI);
+            c.fill();
+            c.stroke();
+            c.restore();
+
+        }
+        c.globalAlpha = 1
+    }
+
+    kolize() {
+        if (hrac.x + hrac.w >= this.x + this.w / 2 - 50 && hrac.x <= this.x + this.w / 2 + 50 && hrac.y + hrac.h >= this.y + this.h / 2 - 50 && hrac.y <=
+            this.y + this.h / 2 + 50) {
+            c.fillStyle = "rgb(68, 68, 68)"
+            c.fillRect(hrac.x + 5, hrac.y - 50, hrac.w - 10, 30)
+            c.fillStyle = "white"
+            c.font = "20px Arial"
+            c.fillText("E", hrac.x + hrac.w / 2 - 7.5, hrac.y - 27.5)
+            hrac.tabulka = false
+        }
+
+        if (hrac.x + hrac.w >= this.x + this.w / 2 - 50 && hrac.x <= this.x + this.w / 2 + 50 && hrac.y + hrac.h >= this.y + this.h / 2 - 50 && hrac.y <=
+            this.y + this.h / 2 + 50 && hrac.ee) {
+            this.showScroll = true
+        }
+        if (this.showScroll) {
+            if (this.text == "sutrinfo.png") {
+                c.drawImage(this.scrolly, canvas.width / 2 - 300, canvas.height / 2 - 400, 600, 800)
+            }
+            if (hrac.enter) {
+                this.showScroll = false
+            }
+        }
     }
 }

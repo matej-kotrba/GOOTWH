@@ -6,7 +6,7 @@ var projektily = []
 var tlacitka = []
 var animace = []
 // index hotovych levelu 
-var levelsCompleted = 0
+var levelsCompleted = 4
 var inventar = new Inventar()
 var smrt = 0
 var lokaceLevely = 0
@@ -46,6 +46,8 @@ var menuimage = new Image()
 menuimage.src = "mainmenu.png"
 var cil = new Image()
 cil.src = "cil.png"
+var bog = new Image()
+bog.src = "bog.png"
 var replayPause = false
 var hoverTrue = false
 var levelTime = 0
@@ -56,8 +58,14 @@ var hudba = new Audio()
 hudba.src = "seal.wav"
 for (var o = 1; o < 6; o++) {
     joky.push(new Audio())
-    joky[o - 1].src = "joke" + o + ".mp3" 
+    joky[o - 1].src = "joke" + o + ".mp3"
 }
+var info = new Audio()
+info.src = "info.mp3"
+var bazina = new Audio()
+bazina.src = "bog.mp3"
+var kitchen = new Audio()
+kitchen.src = "kitchen.mp3"
 
 function spawny() {
     if (lokaceLevely == 0) {
@@ -70,8 +78,18 @@ function spawny() {
         platformy.push(new Bludiste(1000, 0, 200, 200))
         platformy.push(new Bludiste(1200, 0, 200, 1000))
 
+        //tlacitka.push(new Portal( 100, 100, 2000))
+
         zbrane.push(new Bomba(670, 550))
         zbrane.push(new Bomba(1081, 221))
+
+        //zbrane.push(new Mec(670, 550))
+
+        //waifus.push(new Sutr(500,450))
+
+        //platformy.push(new Scroll(200, 350,"sutrinfo.png"))
+
+        //waifus.push(new Summoner(600, 400))
 
         waifus.push(new Dice(300, 350, 120, 120, 300, 350, 450, 350, 600, 350, 900, 350))
         waifus.push(new Dice(1000, 200, 120, 120, 1000, 200, 1000, 500, 1000, 800, 900, 350))
@@ -120,13 +138,104 @@ function spawny() {
         //animace.push(new Plamen(100, 100, 100, 100))
     }
 
+    if (lokaceLevely == 2) {
+
+        waifus.push(new DiceBoss(500, 500))
+
+        platformy.push(new Bludiste(300, 0, 20, 50))
+        platformy.push(new Bludiste(300, 130, 20, 170))
+        platformy.push(new Bludiste(0, 600, 20, 20))
+        platformy.push(new Bludiste(100, 600, 150, 20))
+        platformy.push(new Bludiste(500, 500, 300, 20))
+        platformy.push(new Bludiste(800, 0, 20, 250))
+        platformy.push(new Bludiste(100, 600, 150, 20))
+        platformy.push(new Bludiste(700, 700, 380, 20))
+        platformy.push(new Bludiste(1080, 450, 20, 100))
+        platformy.push(new Bludiste(1080, 650, 20, 100))
+        platformy.push(new Bludiste(1200, 100, 20, 200))
+        platformy.push(new Bludiste(200, 800, 20, 100))
+
+        platformy.push(new Dvere(300, 50, 20, 80))
+        platformy.push(new Dvere(1080, 550, 20, 100))
+        platformy.push(new Dvere(20, 600, 80, 20))
+
+        platformy.push(new Cil(canvas.width / 2, canvas.height / 2))
+
+    }
+
+    if (lokaceLevely == 3) {
+        hrac = new Player(50, 600, 40, 40)
+
+        zbrane.push(new Mec(50,750))
+        zbrane.push(new Mec(500,230))
+        zbrane.push(new Mec(900,20))
+        zbrane.push(new Mec(1200, 500))
+
+        platformy.push(new Bludiste(0,0,400,300))
+        platformy.push(new Bludiste(0,800,canvas.width,100))
+        platformy.push(new Bludiste(600,600,20,200))
+        platformy.push(new Bludiste(600,600,400,20))
+        platformy.push(new Bludiste(1100,600,400,20))
+        platformy.push(new Bludiste(400,280,100,20))
+        platformy.push(new Bludiste(600,150,20,150))
+        platformy.push(new Bludiste(600,150,220,20))
+        platformy.push(new Bludiste(800,0,20,150))
+
+        platformy.push(new Dvere(1000,600,100,20))
+        platformy.push(new Dvere(500,280,100,20))
+
+        platformy.push(new Scroll(100, 550,"sutrinfo.png"))
+
+        waifus.push(new Sutr(500,500))
+        waifus.push(new Sutr(1200,300))
+        waifus.push(new Sutr(700,50))
+        waifus.push(new Sutr(800,700))
+
+        platformy.push(new Cil(720, 750 ))
+    }
+
+    if (lokaceLevely == 4) {
+        hrac = new Player(canvas.width / 2, canvas.height / 2, 40, 40)
+
+        waifus.push(new Summoner(50, canvas.height / 2))
+        waifus.push(new Summoner(1200, canvas.height / 2))
+
+        platformy.push(new Bludiste(canvas.width / 2 - 250, canvas.height / 2 + 70, 500, 20))
+        platformy.push(new Bludiste(0, canvas.height / 2 - 60, 300, 20))
+        platformy.push(new Bludiste(0, canvas.height / 2 + 180, 300, 20))
+        platformy.push(new Bludiste(1100, canvas.height / 2 - 60, 300, 20))
+        platformy.push(new Bludiste(1100, canvas.height / 2 + 180, 300, 20))
+
+        zbrane.push(new Bomba(40, 40, 40, 40))
+        zbrane.push(new Bomba(1270, 40, 40, 40))
+        zbrane.push(new Bomba(40, 820, 40, 40))
+        zbrane.push(new Bomba(1270, 820, 40, 40))
+
+        platformy.push(new Cil(canvas.width / 2, canvas.height / 2 + 10, 40, 40))
+    }
+
+    if (lokaceLevely == 5) {
+
+        waifus.push(new DiceBossParek(1000,400))
+        
+    } 
+
     else {
 
     }
 }
 
 
-function main() {
+var lastRender = 0
+var progress = 0
+var dt = 0
+var dt2 = 0
+
+function main(timestamp) {
+    dt2 = dt
+    progress = timestamp - lastRender
+    dt = progress / (1000 / 60)
+    lastRender = timestamp
     if (spawn == 0 && spusteno && obrazovka == "hra") {
         spawny()
         spawn++
@@ -141,6 +250,33 @@ function main() {
             projektil: []
 
         })
+
+        for (var h in waifus) {
+            if (lokaceLevely == 2) {
+                if (lokaceLevely == 2 && zbrane.length == 0 && inventar.inventory[0] == null && inventar.inventory[1] == null &&
+                    inventar.inventory[2] == null && inventar.inventory[3] == null && inventar.inventory[4] == null && waifus[h].zivoty > 0) {
+                    zbrane.push(new Bomba(Math.random() * 1150 + 50, Math.random() * 800 + 50))
+                }
+
+            }
+        }
+
+        if (lokaceLevely == 2 && waifus.length != 0) {
+            bazina.play()
+            bazina.loop = true
+
+        }
+
+        if (lokaceLevely == 5 && waifus.length != 0) {
+            kitchen.play()
+            kitchen.loop = true
+        }
+
+        else {
+
+        }
+
+
         if (replay.length == 1) {
             for (var b in platformy) {
                 if (platformy[b].type == "platforma") {
@@ -181,12 +317,23 @@ function main() {
         }
 
         //console.log(replay.hracData)
-        c.fillStyle = "rgb(27, 27, 27)"
-        c.fillRect(0, 0, 1350, 900)
+        if (lokaceLevely == 2) {
+            c.drawImage(bog, 0, 0, canvas.width, canvas.height)
+            c.fillStyle = "black"
+            c.globalAlpha = 0.2
+            c.fillRect(0, 0, canvas.width, canvas.height)
+            c.globalAlpha = 1
+            
+        }
+        else {
+            c.fillStyle = "rgb(27, 27, 27)"
+            c.fillRect(0, 0, 1350, 900)
+        }
 
-        levelTime++
 
-        if (levelTime == 60 && obrazovka != "victory") {
+        levelTime += 1 * dt
+
+        if (levelTime >= 60 && obrazovka != "victory") {
             skore++
             levelTime = 0
         }
@@ -200,8 +347,43 @@ function main() {
         }
 
         for (var i in platformy) {
+            if (platformy[i].type != "scroll") {
             platformy[i].vykresleni()
             platformy[i].kolize()
+            }
+        }
+
+        if (waifus.length != 0 && lokaceLevely == 2) {
+            c.fillStyle = "black"
+            c.fillRect(canvas.width / 2 - 250, canvas.height / 2 - 400, 500, 50)
+            if (waifus.length > 0) {
+                c.fillStyle = "black"
+                c.fillRect(canvas.width / 2 - 248, canvas.height / 2 - 398, 496, 46)
+                if (waifus[0].zivoty == 5) {
+                    c.fillStyle = "green"
+                    c.fillRect(canvas.width / 2 - 248, canvas.height / 2 - 398, 496, 46)
+                }
+                else if (waifus[0].zivoty == 4) {
+                    c.fillStyle = "limegreen"
+                    c.fillRect(canvas.width / 2 - 248, canvas.height / 2 - 398, 496 * 0.80, 46)
+                }
+                else if (waifus[0].zivoty == 3) {
+                    c.fillStyle = "yellow"
+                    c.fillRect(canvas.width / 2 - 248, canvas.height / 2 - 398, 496 * 0.60, 46)
+                }
+                else if (waifus[0].zivoty == 2) {
+                    c.fillStyle = "orange"
+                    c.fillRect(canvas.width / 2 - 248, canvas.height / 2 - 398, 496 * 0.40, 46)
+                }
+                else if (waifus[0].zivoty == 1) {
+                    c.fillStyle = "red"
+                    c.fillRect(canvas.width / 2 - 248, canvas.height / 2 - 398, 496 * 0.20, 46)
+                }
+            }
+        }
+
+        for (var i in animace) {
+            animace[i].vykresleni()
         }
 
         for (var i in zbrane) {
@@ -216,9 +398,7 @@ function main() {
             waifus[i].pohnuti()
         }
 
-        for (var i in animace) {
-            animace[i].vykresleni()
-        }
+        
 
         for (var i in projektily) {
             projektily[i].vykresleni()
@@ -227,6 +407,13 @@ function main() {
 
         for (var i in tlacitka) {
             tlacitka[i].vykresleni()
+        }
+
+        for (var k in platformy) {
+            if (platformy[k].type == "scroll") {
+                platformy[k].vykresleni()
+                platformy[k].kolize()
+            }
         }
 
         hrac.vykresleni()
@@ -252,11 +439,11 @@ function main() {
                 jokeProbehl = true
                 var jokeCislo = Math.floor(Math.random() * 5)
                 if (jokeCislo == 5) {
-                    jokeCislo = Math.floor(Math.random() * 5) 
+                    jokeCislo = Math.floor(Math.random() * 5)
                 }
                 joky[jokeCislo].play()
             }
-            smrt++
+            smrt += 1 * dt
             if (smrt > 10 && !hrac.enter) {
                 c.drawImage(kostka, 0, 0, canvas.width, canvas.height)
                 c.fillStyle = "red"
@@ -266,6 +453,7 @@ function main() {
                 c.textAlign = "start"
                 skore = 0
                 levelTime = 0
+                projektily.length = 0
             }
             if (hrac.enter) {
                 jokeProbehl = false
@@ -287,9 +475,13 @@ function main() {
         if (waifus.length == 0) {
 
         }
-        if (hrac.escape) {
+        if (hrac.escape && skore > 0) {
+            bazina.pause()
+            kitchen.pause()
+            pocetItemu = 0
             hrac = new Player(40, 40, 40, 40)
             waifus = []
+            projektily.length = 0
             platformy = []
             animace.length = 0
             zbrane = []
@@ -297,8 +489,9 @@ function main() {
             obrazovka = "mainMenu"
             spawn = 0
             casText = 180
-            mainMenu()
             screen("mainMenu")
+            mainMenu()
+            
         }
 
 
@@ -337,6 +530,7 @@ function main() {
         platformy = []
         animace.length = 0
         zbrane = []
+        projektily.length = 0
         inventar = new Inventar()
         spawn = 0
         casText = 180
@@ -377,6 +571,8 @@ function screen(volba) {
             break;
 
         case "hra":
+            bazina.currentTime = 0
+            kitchen.currentTime = 0
             tlacitka = []
             replay = []
             obrazovka = "hra"
@@ -404,7 +600,8 @@ function screen(volba) {
             break;
 
         case "predHra":
-            console.log('Welcome to Closed Alpha of first version of GOotWH if you are able to play this game you presumably got the key to this game from me, if not you stole it and then you shoud go back to your dog kennel.')
+
+            console.log('Welcome to Closed Alpha of first version of GOotWH if you are able to play this game you presumably got the key to this game from me, if not you stole it and then you should go back to your dog kennel.')
             console.log("\nConsole is help for me to determine issues about game or get information that i need, for player it shoud NOT be used during gameplay.")
             break;
 
@@ -417,20 +614,23 @@ function screen(volba) {
                     tlacitka.push(new Levely(100 + 430 * i, 100, 300, 200, "level" + i + ".png", false, i))
                 }
                 else if (levelsCompleted < i) {
-                    tlacitka.push(new Levely(100 + 430 * i, 100, 300, 200, "level1.png" /*"level" + i + ".png"*/, true, i))
+                    tlacitka.push(new Levely(100 + 430 * i, 100, 300, 200, "level" + i + ".png", true, i))
                 }
             }
             for (var k = 0; k < 3; k++) {
+                var level = k + 3
                 if (levelsCompleted >= k + 3) {
-                    tlacitka.push(new Levely(100 + 430 * k, 350, 300, 200, "level1.png"/*"level" + k + 3 + ".png"*/, false, k + 3))
+                    tlacitka.push(new Levely(100 + 430 * k, 350, 300, 200, "level" + level + ".png", false, k + 3))
                 }
                 else if (levelsCompleted < k + 3) {
-                    tlacitka.push(new Levely(100 + 430 * k, 350, 300, 200, "level1.png"/*"level" + k + 3 + ".png"*/, true, k + 3))
+                    
+                    tlacitka.push(new Levely(100 + 430 * k, 350, 300, 200, "level" + level + ".png", true, k + 3))
                 }
             }
             break;
 
         case "victory":
+            bazina.pause()
             obrazovka = "victory"
             tlacitka = []
             break;
@@ -443,7 +643,7 @@ function mainMenu() {
     c.fillRect(0, 0, 1350, 900)
     c.drawImage(menuimage, 0, 0, canvas.width, canvas.height)
     if (replay.length != 0 && casText > 0 && !replaySaveShow) {
-        casText--
+        casText -= dt
         c.font = "30px Calibri"
         c.fillStyle = "white"
         c.fillText("Replay saved", 10, 30)
@@ -493,7 +693,7 @@ function mainMenu() {
 
     }
     if (hrac.klik.x != 0 && hrac.klik.y != 0) {
-        mazaniClick--
+        mazaniClick -= dt
     }
 
     if (mazaniClick <= 0) {
@@ -511,14 +711,14 @@ function predHra() {
     }
 
     if (hoverTime < 1000 && !hoverTrue) {
-        hoverTime += 3
+        hoverTime += 3 * dt
     }
 
     if (hoverTrue && hoverTime > 0) {
-        hoverTime -= 5
+        hoverTime -= 5 * dt
     }
 
-    if (hoverTime < 0 ) {
+    if (hoverTime < 0) {
         hoverTime = 0
     }
 
@@ -527,7 +727,7 @@ function predHra() {
     }
 
 
-    hover = hoverTime / 1000
+    hover = (hoverTime / 1000) * dt
     c.fillStyle = "black"
     c.fillRect(0, 0, canvas.width, canvas.height)
     c.fillStyle = "whitesmoke"
@@ -609,7 +809,7 @@ function controls() {
         mainMenu()
     }
     if (hrac.klik.x != 0 && hrac.klik.y != 0) {
-        mazaniClick--
+        mazaniClick -= dt
     }
 
     if (mazaniClick <= 0) {
