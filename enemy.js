@@ -200,6 +200,7 @@ class DiceBoss {
     }
 
     pohnuti() {
+        if (!dialog) {
         this.xs = xxs(this.x, this.y, hrac.x, hrac.y)
         this.ys = yys(this.x, this.y, hrac.x, hrac.y)
         /*if (dt > 1) {
@@ -224,6 +225,7 @@ class DiceBoss {
             hrac.zivot[0] = "dead"
         }
     }
+}
 
     pohyb() {
 
@@ -310,8 +312,8 @@ class Summonings {
     pohnuti() {
         this.xs = xxs(this.x, this.y, hrac.x, hrac.y)
         this.ys = yys(this.x, this.y, hrac.x, hrac.y)
-        this.x += this.xs
-        this.y += this.ys
+        this.x += this.xs * dt
+        this.y += this.ys * dt
 
         if (hrac.x + hrac.w >= this.x && hrac.x <= this.x + this.w && hrac.y + hrac.h >= this.y && hrac.y <= this.y + this.h) {
             hrac.zivot[0] = "dead"
@@ -392,8 +394,6 @@ class DiceBossParek {
         this.image.src = "4diceBoss.png"
         this.imageOtoceny = new Image()
         this.imageOtoceny.src = "4diceBoss-otoceny.png"
-        this.imagePozadi = new Image()
-        this.imagePozadi.src = "kuchyne.png"
         this.type = "KlobasaBoss"
         this.zivoty = 10
         this.body = [{ x: 100, y: 100 }, { x: 100, y: 600 }, { x: 400, y: 100 }, { x: 400, y: 600 }, { x: 700, y: 100 }, { x: 700, y: 600 }, { x: 1000, y: 100 }, { x: 1000, y: 600 }]
@@ -410,11 +410,11 @@ class DiceBossParek {
         this.formaCas = 0
         this.formaAkce = false
         this.bombaPocet = 0
+        this.klobasaPravda = false
         this.pohyb()
     }
 
     vykresleni() {
-        c.drawImage(this.imagePozadi, 0, 0, canvas.width, canvas.height)
         if (this.cas - 10 > 0) {
             this.expand += 0.35 * dt
             for (var b = 0; b < 10; b++) {
@@ -529,18 +529,7 @@ class DiceBossParek {
     }
 
     pohnuti() {
-        if (zbrane.length == 0 && inventar.inventory[0] == null && inventar.inventory[1] == null && inventar.inventory[2] == null && inventar.inventory[3] == null
-            && inventar.inventory[4] == null) {
-            zbrane.push(new Bomba(Math.random() * 1100 + 100, Math.random() * 700 + 100, 40, 40))
-        }
-
-        for (var v in zbrane) {
-            zbrane[v].vykresleni()
-            zbrane[v].pohyb()
-            zbrane[v].smazat()
-            zbrane[v].delete()
-        }
-
+        if (!dialog) {
         if (this.formaCas >= 8) {
             this.forma = true
             this.formaCas = 0
@@ -561,18 +550,33 @@ class DiceBossParek {
             if (vzdalenost(this.x, this.y, 1100, canvas.height / 2) < 5) {
                 this.formaAkce = true
                 for (var h = 0; h < 25; h++) {
-                    var klobasaS = Math.random() * 6 + 3
+                    var klobasaS = Math.random() * 8 + 3
                     projektily.push(new Klobasa(1100, h * 40, 100, 35, 0, h * 40, klobasaS, true))
                 }
             }
 
         }
+        if (this.formaAkce) {
+        for (var m in projektily) {
+            if (projektily[m].type == "klobasa" && this.formaAkce && projektily.length != 0) {
+                this.klobasaPravda = true
+            }
+        }   
 
-        if (this.formaAkce && projektily.length == 0) {
+            if (projektily.length == 0) {
+                this.klobasaPravda = false
+            }
+
+            if (!this.klobasaPravda) {
             this.formaAkce = false
             this.forma = false
             this.formaCas = 0
-        }
+            }
+            else {
+                this.klobasaPravda = false
+            }
+    }
+
 
         if (!this.forma) {
             this.xs = xxs(this.x, this.y, this.body[this.bodyVzdalenost.index].x, this.body[this.bodyVzdalenost.index].y)
@@ -596,11 +600,11 @@ class DiceBossParek {
             }
         }
 
-        if (hrac.x + hrac.w >= this.x && hrac.x <= this.x + this.w && hrac.y + hrac.h >= this.y && hrac.y <= this.y + this.h) {
+        if (hrac.x + hrac.w >= this.x + 10 && hrac.x <= this.x + this.w - 10 && hrac.y + hrac.h >= this.y && hrac.y <= this.y + this.h) {
             hrac.zivot[0] = "dead"
         }
 
-
+    }
     }
 
     smrt() {

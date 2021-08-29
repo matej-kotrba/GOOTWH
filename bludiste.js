@@ -1,12 +1,19 @@
 class Bludiste {
-    constructor(x, y, w, h) {
+    constructor(x, y, w, h, hybat) {
         this.x = x
         this.y = y
         this.w = w
         this.h = h
+        this.startX = x
+        this.pohyb = hybat
+        this.index = 0
         this.image = new Image()
         this.image.src = "zed.png"
         this.type = "platforma"
+        if (this.pohyb == true) {
+            this.index = packaPlatforma
+            packaPlatforma++
+        }
 
     }
 
@@ -269,6 +276,138 @@ class Scroll {
             }
             if (hrac.enter) {
                 this.showScroll = false
+            }
+        }
+    }
+}
+
+class Teleport {
+    constructor(x1, y1, x2, y2) {
+        this.x = x1
+        this.y = y1
+        this.w = 90
+        this.h = 120
+        this.x2 = x2
+        this.y2 = y2
+        this.cas = 0
+        this.index = teleportPoradi
+        teleportPoradi++
+        this.cooldown = false
+        this.barva = { barva1: Math.random() * 255, barva2: Math.random() * 255, barva3: Math.random() * 255 }
+        this.images = []
+        for (var h = 0; h < 7; h++) {
+            this.images.push(new Image())
+            this.images[h].src = "./portalPlatforma/portal" + h + ".png"
+        }
+    }
+
+    vykresleni() {
+        this.cas += dt
+        if (this.cas >= 6) {
+            this.index++
+            this.cas = 0
+            if (this.index >= this.images.length - 1) {
+                this.index = 0
+            }
+        }
+        c.drawImage(this.images[this.index], this.x, this.y, this.w, this.h)
+
+        c.drawImage(this.images[this.index], this.x2, this.y2, this.w, this.h)
+
+        c.fillStyle = "rgb(" + this.barva.barva1 + "," + this.barva.barva2 + "," + this.barva.barva3 + ")"
+        c.fillRect(this.x + this.w / 2 - 30, this.y + 10, 30, 5)
+        c.fillRect(this.x2 + this.w / 2 - 30, this.y2 + 10, 30, 5)
+    }
+
+    kolize() {
+
+        if (hrac.x + hrac.w >= this.x + 20 && hrac.x <= this.x + this.w - 45 && hrac.y + hrac.h >= this.y + 30 && hrac.y <= this.y + this.h && this.cooldown == false) {
+            hrac.x = this.x2 + this.w / 2 - hrac.w / 2
+            hrac.y = this.y2 + this.h / 2 - hrac.w / 2
+            this.cooldown = true
+        }
+
+        else if (hrac.x + hrac.w >= this.x2 + 20 && hrac.x <= this.x2 + this.w - 45 && hrac.y + hrac.h >= this.y2 + 30 && hrac.y <= this.y2 + this.h && this.cooldown == false) {
+            hrac.x = this.x + this.w / 2 - hrac.w / 2
+            hrac.y = this.y + this.h / 2 - hrac.w / 2
+            this.cooldown = true
+        }
+
+        else if (!(hrac.x + hrac.w >= this.x + 20 && hrac.x <= this.x + this.w - 45 && hrac.y + hrac.h >= this.y + 30 && hrac.y <= this.y + this.h) && !(
+            hrac.x + hrac.w >= this.x2 + 20 && hrac.x <= this.x2 + this.w - 45 && hrac.y + hrac.h >= this.y2 + 30 && hrac.y <= this.y2 + this.h
+        )) {
+            this.cooldown = false
+        }
+    }
+}
+
+class Packa {
+    constructor(x, y, vzdalenost) {
+        this.x = x
+        this.y = y
+        this.w = 25
+        this.h = 40
+        this.startX = x
+        this.type = "paka"
+        this.locked = true
+        this.cas = 0
+        this.index = packaPocet
+        packaPocet++
+        this.vzdalenost = vzdalenost
+        this.image = new Image()
+        this.image.src = "packa.png"
+        this.imageOtoceny = new Image()
+        this.imageOtoceny.src = "packa-otocena.png"
+    }
+
+    vykresleni() {
+        if (this.locked) {
+            c.drawImage(this.image, this.x, this.y, this.w, this.h)
+        }
+        else {
+            c.drawImage(this.imageOtoceny, this.x, this.y, this.w, this.h)
+        }
+    }
+
+    kolize() {
+        if (this.cas > 0) {
+            this.cas -= dt
+            if (this.cas < 0) {
+                this.cas = 0
+            }
+        }
+        if (hrac.x + hrac.w >= this.x - 2 && hrac.x <= this.x + this.w + 2 && hrac.y + hrac.h >= this.y - 2 && hrac.y <= this.y + this.h + 2) {
+            c.fillStyle = "rgb(68, 68, 68)"
+            c.fillRect(hrac.x + 5, hrac.y - 50, hrac.w - 10, 30)
+            c.fillStyle = "white"
+            c.font = "20px Arial"
+            c.fillText("E", hrac.x + hrac.w / 2 - 7.5, hrac.y - 27.5)
+            hrac.tabulka = false
+        }
+
+        if (hrac.x + hrac.w >= this.x - 2 && hrac.x <= this.x + this.w + 2 && hrac.y + hrac.h >= this.y - 2 && hrac.y <= this.y + this.h + 2 && this.locked == true && hrac.ee && this.cas <= 0) {
+            this.locked = false
+            this.cas = 10
+        }
+
+        if (hrac.x + hrac.w >= this.x - 2 && hrac.x <= this.x + this.w + 2 && hrac.y + hrac.h >= this.y - 2 && hrac.y <= this.y + this.h + 2 && this.locked == false && hrac.ee && this.cas <= 0) {
+            this.locked = true
+            this.cas = 10
+        }
+
+        for (var abc in platformy) {
+            if (vzdalenost(platformy[abc].x, platformy[abc].y, platformy[abc].startX + this.vzdalenost, platformy[abc].y) > 5 && !(this.locked)) {
+
+                if (platformy[abc].pohyb == true && platformy[abc].index == this.index) {
+                    platformy[abc].x += 3
+                    
+                }
+            }
+
+            if (vzdalenost(platformy[abc].x, platformy[abc].y, platformy[abc].startX, platformy[abc].y) > 5 && this.locked) {
+                if (platformy[abc].pohyb == true && platformy[abc].index == this.index) {
+                    platformy[abc].x -= 3
+                }
             }
         }
     }

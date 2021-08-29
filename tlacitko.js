@@ -11,7 +11,7 @@ class Tlacitko {
         this.funguje = false
         this.click = false
         this.hover = 0
-        
+
     }
 
     vykresleni() {
@@ -30,18 +30,19 @@ class Tlacitko {
 
         }
         else {
+
             this.funguje = false
             //this.hover = 0
             if (this.hover > 0) {
                 this.hover--
                 c.globalAlpha = this.hover / 10
                 c.fillStyle = "rgb(133, 0, 0)"
-                c.fillRect(this.x, this.y, this.w, this.h) 
+                c.fillRect(this.x, this.y, this.w, this.h)
             }
-             
+
 
         }
-        
+
         c.fillStyle = "white"
         c.font = "30px Arial"
         c.globalAlpha = 1
@@ -57,6 +58,21 @@ class Tlacitko {
         else {
             this.click = false
         }
+    }
+
+    efekt() {
+
+        /*for (var kolecko = 1; kolecko < 4; kolecko++) {
+            c.beginPath();
+            c.arc(klik.x, klik.y, 4 * kolecko, 0, 2 * Math.PI);
+            c.fill();
+            c.stroke();
+            c.restore();
+        }*/
+    }
+
+    delete() {
+
     }
 }
 
@@ -83,7 +99,7 @@ class Kriz {
         else {
             this.funguje = false
         }
-        
+
 
 
     }
@@ -95,6 +111,10 @@ class Kriz {
         else {
             this.click = false
         }
+    }
+
+    delete() {
+
     }
 
 }
@@ -134,7 +154,7 @@ class Levely {
         }
 
         c.drawImage(this.image, this.x + 2, this.y + 2, this.w - 4, this.h - 4)
-        
+
 
         if (this.locked == true) {
             c.fillStyle = "rgba(0,0,0,0.4)"
@@ -155,6 +175,10 @@ class Levely {
         else {
             this.click = false
         }
+    }
+
+    delete() {
+
     }
 }
 
@@ -187,11 +211,18 @@ class Plamen {
         }
         this.cas += dt
     }
+    kliknuti() {
+
+    }
+
+    delete() {
+
+    }
 
 }
 
 class Portal {
-    constructor(x,y,duration) {
+    constructor(x, y, duration) {
         this.x = x
         this.y = y
         this.w = 150
@@ -219,4 +250,99 @@ class Portal {
         }
         this.cas += dt
     }
+
+    kliknuti() {
+
+    }
+
+    delete() {
+
+    }
+}
+
+class KlikEfekt {
+    constructor(x, y) {
+        this.x = x
+        this.y = y
+        this.w = 20
+        this.h = 20
+        this.cas = 0
+        this.koleckoo = 1
+        this.reverse = false
+        this.hold = true
+        if (barvicka == undefined || barvicka == "random") {
+        this.barva = "rgb(" + Math.random() * 245 + 10 + "," + Math.random() * 245 + 10 + "," + Math.random() * 245 + 10 + ")"
+        }
+        else if (barvicka == "none") {
+            this.barva = "rgba(255,255,255,0)"
+        }
+        else {
+            this.barva = barvicka
+        }
+    }
+
+    vykresleni() {
+        
+        if (!mysKlik || !this.hold || casKlik <= 10) {
+        c.fillStyle = this.barva
+        c.globalAlpha = 0.5
+        if (this.koleckoo >= 0) {
+        c.beginPath()
+        c.arc(this.x, this.y, 2 * this.koleckoo, 0, 2 * Math.PI);
+        c.fill();
+        c.stroke();
+        c.restore();
+        }
+    }
+
+    if (mysKlik && this.cas > 0 && casKlik > 10 && this.hold) {
+        this.x = hrac.mouse.x
+        this.y = hrac.mouse.y
+        c.fillStyle = this.barva
+        c.globalAlpha = 0.5
+        if (this.koleckoo >= 0) {
+        c.beginPath()
+        c.arc(this.x, this.y, 2 * this.koleckoo, 0, 2 * Math.PI);
+        c.fill();
+        c.stroke();
+        c.restore();
+        }
+    }
+        c.globalAlpha = 1
+        if (this.koleckoo > 12) {
+            if (casKlik <= 0) {
+            this.reverse = true
+        }
+            if (casKlik > 0 && this.koleckoo > 18) {
+                this.reverse = true
+            }
+        }
+
+        if (!mysKlik) {
+            this.hold = false
+        }
+
+        if (this.reverse && this.cas > 1 && !this.hold) {
+            this.koleckoo -= 2
+            this.cas = 0
+        }
+
+        if (!this.reverse && this.cas > 1) {
+            this.koleckoo += 1
+            this.cas = 0
+        }
+        this.cas += dt
+        
+    }
+
+    kliknuti(klik) {
+
+    }
+
+    delete() {
+        if (this.koleckoo <= 0) {
+            tlacitka.splice(tlacitka.indexOf(this), 1)
+        }
+    }
+
 }

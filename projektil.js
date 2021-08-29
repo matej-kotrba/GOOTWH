@@ -15,6 +15,10 @@ class BombaHozena {
         this.explodeTime = 16
         this.expand = 0.3
         this.hit = false
+        if (this.sx != 0 && this.sy != 0) {
+            this.sx = sx / 1.2
+            this.sy = sy / 1.2
+        }
     }
 
     vykresleni() {
@@ -24,9 +28,9 @@ class BombaHozena {
     }
 
     pohyb() {
-        this.rychlost *= 0.99 * dt
-        this.x += this.sx * this.rychlost
-        this.y += this.sy * this.rychlost
+        this.rychlost *= 0.99
+        this.x += this.sx * this.rychlost * dt
+        this.y += this.sy * this.rychlost * dt
 
         if (this.rychlost < 2) {
             this.vybuch()
@@ -237,16 +241,17 @@ class Klobasa {
                 this.y += this.sy * this.s * dt
             
         }
-        if (this.x > canvas.width || this.x + this.w < 0 || this.y > canvas.height || this.y + this.h < 0) {
-            projektily.splice(projektily.indexOf(this), 1)
-        }
+        
+        this.vybuch()
 
-        if (hrac.x + hrac.w >= this.x && hrac.x <= this.x + this.w && hrac.y + hrac.h >= this.y && hrac.y <= this.y + this.h) {
+        if (hrac.x + hrac.w >= this.x && hrac.x <= this.x + this.w && hrac.y + hrac.h >= this.y + 10 && hrac.y <= this.y + this.h - 10) {
             hrac.zivot[0] = "dead"
         }
     }
 
     vybuch() {
-
+        if (this.x > canvas.width || this.x + this.w < 0 || this.y > canvas.height || this.y + this.h < 0) {
+            projektily.splice(projektily.indexOf(this), 1)
+        }
     }
 }

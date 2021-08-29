@@ -55,6 +55,7 @@ class Player {
     }
 
     pohyb() {
+        if (!dialog) {
         if (this.casMec > 0) {
             this.casMec -= dt
         }
@@ -83,32 +84,55 @@ class Player {
             this.x += 5 * dt
             this.lastkey = "d"
         }
-        if (inventar.inventory[inventar.vyber] == "bomba" && this.qq || inventar.inventory[inventar.vyber] == "mec" && this.qq) {
+        if (inventar.inventory[inventar.vyber] == "bomba" && this.qq || inventar.inventory[inventar.vyber] == "bomba" && this.ff ||
+         inventar.inventory[inventar.vyber] == "mec" && this.qq ||inventar.inventory[inventar.vyber] == "mec" && this.ff) {
             //zbrane.push(new Bomba(inventar.inventoryData[inventar.vyber].x, inventar.inventoryData[inventar.vyber].y))
-            if (inventar.inventory[inventar.vyber] == "bomba" && this.qq) {
-                if (this.lastkey == "d") {
-                    projektily.push(new BombaHozena(this.x + this.w / 2, this.y + this.h / 2, 1, 0))
+            if (inventar.inventory[inventar.vyber] == "bomba" && this.qq || this.ff && inventar.inventory[inventar.vyber] == "bomba") {
+                if (this.ww && this.dd) {
+                    projektily.push(new BombaHozena(this.x + this.w / 2, this.y + this.h / 2, 1, -1))
                     inventar.inventory[inventar.vyber] = null
                     inventar.inventoryData[inventar.vyber] = null
                 }
-                else if (this.lastkey == "a") {
-                    projektily.push(new BombaHozena(this.x + this.w / 2, this.y + this.h / 2, -1, 0))
+                else if (this.ww && this.aa) {
+                    projektily.push(new BombaHozena(this.x + this.w / 2, this.y + this.h / 2, -1, -1))
                     inventar.inventory[inventar.vyber] = null
                     inventar.inventoryData[inventar.vyber] = null
                 }
-                else if (this.lastkey == "w") {
-                    projektily.push(new BombaHozena(this.x + this.w / 2, this.y + this.h / 2, 0, -1))
+                else if (this.ss && this.dd) {
+                    projektily.push(new BombaHozena(this.x + this.w / 2, this.y + this.h / 2, 1, 1))
                     inventar.inventory[inventar.vyber] = null
                     inventar.inventoryData[inventar.vyber] = null
                 }
-                else if (this.lastkey == "s") {
-                    projektily.push(new BombaHozena(this.x + this.w / 2, this.y + this.h / 2, 0, 1))
+                else if (this.ss && this.aa) {
+                    projektily.push(new BombaHozena(this.x + this.w / 2, this.y + this.h / 2, -1, 1))
                     inventar.inventory[inventar.vyber] = null
                     inventar.inventoryData[inventar.vyber] = null
+                }
+                else {
+                    if (this.lastkey == "d") {
+                        projektily.push(new BombaHozena(this.x + this.w / 2, this.y + this.h / 2, 1, 0))
+                        inventar.inventory[inventar.vyber] = null
+                        inventar.inventoryData[inventar.vyber] = null
+                    }
+                    else if (this.lastkey == "a") {
+                        projektily.push(new BombaHozena(this.x + this.w / 2, this.y + this.h / 2, -1, 0))
+                        inventar.inventory[inventar.vyber] = null
+                        inventar.inventoryData[inventar.vyber] = null
+                    }
+                    else if (this.lastkey == "w") {
+                        projektily.push(new BombaHozena(this.x + this.w / 2, this.y + this.h / 2, 0, -1))
+                        inventar.inventory[inventar.vyber] = null
+                        inventar.inventoryData[inventar.vyber] = null
+                    }
+                    else if (this.lastkey == "s") {
+                        projektily.push(new BombaHozena(this.x + this.w / 2, this.y + this.h / 2, 0, 1))
+                        inventar.inventory[inventar.vyber] = null
+                        inventar.inventoryData[inventar.vyber] = null
+                    }
                 }
             }
 
-            if (inventar.inventory[inventar.vyber] == "mec" && this.qq && this.casMec <= 0) {
+            if (inventar.inventory[inventar.vyber] == "mec" && this.qq && this.casMec <= 0 || inventar.inventory[inventar.vyber] == "mec" && this.ff && this.casMec <= 0) {
                 this.casMec = 180
                 if (!this.otocenoMec) {
                     projektily.push(new MecPouzity(this.x + this.w / 2, this.y + this.h / 2))
@@ -118,6 +142,7 @@ class Player {
                 }
             }
         }
+    }
     }
 
     inventar() {

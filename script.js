@@ -27,11 +27,11 @@ function yys(startX, startY, x, y) {
 
 
 addEventListener('keydown', function (e) {
-    console.log(e) 
+    console.log(e)
     if (e.code == "KeyA") {
         hrac.aa = true
     }
-    if (e.code == "KeyD") { 
+    if (e.code == "KeyD") {
         hrac.dd = true
     }
 
@@ -43,7 +43,7 @@ addEventListener('keydown', function (e) {
         hrac.ss = true
     }
 
-    if(e.code == "KeyE") {
+    if (e.code == "KeyE") {
         hrac.ee = true
         if (pocetItemu >= 2 && !hrac.tabulka) {
             hrac.tabulka = true
@@ -67,26 +67,29 @@ addEventListener('keydown', function (e) {
 
     if (e.code == "ArrowLeft") {
         if (hrac.tabulka) {
-        hrac.vyberLokace--
-        if (hrac.vyberLokace < 0) {
-            hrac.vyberLokace = 9
+            hrac.vyberLokace--
+            if (hrac.vyberLokace < 0) {
+                hrac.vyberLokace = 9
+            }
         }
-    }
     }
 
     if (e.code == "ArrowRight") {
         if (hrac.tabulka) {
-        hrac.vyberLokace++
-        if (hrac.vyberLokace > 9) {
-            hrac.vyberLokace = 0
+            hrac.vyberLokace++
+            if (hrac.vyberLokace > 9) {
+                hrac.vyberLokace = 0
+            }
         }
-    }
     }
 
     if (e.code == "Enter") {
         hrac.enter = true
         if (hrac.tabulka) {
             hrac.presun()
+        }
+        if (dialog && obrazovka == "hra") {
+            dialogIndex++
         }
     }
 
@@ -96,12 +99,20 @@ addEventListener('keydown', function (e) {
 
     if (e.code == "Space") {
         hrac.space = true
+        if (dialog) {
+            if (lokaceLevely == 5) {
+                dialogIndex = dialogLevel5.length
+            }
+        }
         if (replayPause) {
             replayPause = false
         }
         else {
             replayPause = true
         }
+    }
+    if (e.code == "KeyF") {
+        hrac.ff = true
     }
 }
 )
@@ -117,7 +128,7 @@ addEventListener('keyup', function (e) {
     if (e.code == "KeyW") {
         hrac.ww = false
     }
-    
+
     if (e.code == "KeyS") {
         hrac.ss = false
     }
@@ -141,6 +152,9 @@ addEventListener('keyup', function (e) {
     if (e.code == "Space") {
         hrac.space = false
     }
+    if (e.code == "KeyF") {
+        hrac.ff = false
+    }
 
 })
 
@@ -149,15 +163,15 @@ window.addEventListener("wheel", function (s) {
     if (s.deltaY > 0) {
         // dolu
         inventar.vyber++
-        if (inventar.vyber > 4){
+        if (inventar.vyber > 4) {
             inventar.vyber = 0
         }
-        
-    }   
+
+    }
     else if (s.deltaY < 0) {
         // nahoru
         inventar.vyber--
-        if (inventar.vyber < 0){
+        if (inventar.vyber < 0) {
             inventar.vyber = 4
         }
     }
@@ -166,15 +180,32 @@ window.addEventListener("wheel", function (s) {
     }
 })
 
-canvas.onmousemove = function(h) {
+canvas.onmousemove = function (h) {
     var rect = canvas.getBoundingClientRect()
     hrac.mouse.x = (h.clientX - rect.left) * (canvas.clientWidth / canvas.width)
     hrac.mouse.y = (h.clientY - rect.top) * (canvas.clientHeight / canvas.height)
 }
 
-canvas.addEventListener("mousedown", function(h) {
-    var klik = {x: h.offsetX, y: h.offsetY}
+var mysKlik = false
+var casKlik = 0
+var hybaniKlik = false
+
+
+
+canvas.addEventListener("mousedown", function (h) {
+    var klik = { x: h.offsetX, y: h.offsetY }
+    mysKlik = true
+    hybaniKlik = true
+    
+    tlacitka.push(new KlikEfekt(klik.x, klik.y))
+    console.log(klik)
     for (var d in tlacitka) {
-    tlacitka[d].kliknuti(klik)
+        tlacitka[d].kliknuti(klik)
     }
-}) 
+})
+
+canvas.addEventListener('mouseup', function (h) {
+    hybaniKlik = false
+    mysKlik = false
+    casKlik = 0
+})

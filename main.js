@@ -6,7 +6,7 @@ var projektily = []
 var tlacitka = []
 var animace = []
 // index hotovych levelu 
-var levelsCompleted = 4
+var levelsCompleted = 0
 var inventar = new Inventar()
 var smrt = 0
 var lokaceLevely = 0
@@ -19,6 +19,8 @@ var spawn = 0
 var hover = 0
 var hoverTime = 0
 var pocetItemu = 0
+var teleportPoradi = 0
+var barvicka = undefined
 var jokeProbehl = false
 var pocetItemuPravda = false
 var casText = 0
@@ -52,6 +54,10 @@ var replayPause = false
 var hoverTrue = false
 var levelTime = 0
 var skore = 0
+var dialog = true
+var dialogIndex = 0
+var packaPlatforma = 0
+var packaPocet = 0
 
 var joky = []
 var hudba = new Audio()
@@ -66,6 +72,8 @@ var bazina = new Audio()
 bazina.src = "bog.mp3"
 var kitchen = new Audio()
 kitchen.src = "kitchen.mp3"
+this.imagePozadi = new Image()
+this.imagePozadi.src = "kuchyne.png"
 
 function spawny() {
     if (lokaceLevely == 0) {
@@ -82,6 +90,8 @@ function spawny() {
 
         zbrane.push(new Bomba(670, 550))
         zbrane.push(new Bomba(1081, 221))
+
+        //platformy.push(new Teleport(150, 400, 300, 400))
 
         //zbrane.push(new Mec(670, 550))
 
@@ -166,32 +176,32 @@ function spawny() {
     if (lokaceLevely == 3) {
         hrac = new Player(50, 600, 40, 40)
 
-        zbrane.push(new Mec(50,750))
-        zbrane.push(new Mec(500,230))
-        zbrane.push(new Mec(900,20))
+        zbrane.push(new Mec(50, 750))
+        zbrane.push(new Mec(500, 230))
+        zbrane.push(new Mec(900, 20))
         zbrane.push(new Mec(1200, 500))
 
-        platformy.push(new Bludiste(0,0,400,300))
-        platformy.push(new Bludiste(0,800,canvas.width,100))
-        platformy.push(new Bludiste(600,600,20,200))
-        platformy.push(new Bludiste(600,600,400,20))
-        platformy.push(new Bludiste(1100,600,400,20))
-        platformy.push(new Bludiste(400,280,100,20))
-        platformy.push(new Bludiste(600,150,20,150))
-        platformy.push(new Bludiste(600,150,220,20))
-        platformy.push(new Bludiste(800,0,20,150))
+        platformy.push(new Bludiste(0, 0, 400, 300))
+        platformy.push(new Bludiste(0, 800, canvas.width, 100))
+        platformy.push(new Bludiste(600, 600, 20, 200))
+        platformy.push(new Bludiste(600, 600, 400, 20))
+        platformy.push(new Bludiste(1100, 600, 400, 20))
+        platformy.push(new Bludiste(400, 280, 100, 20))
+        platformy.push(new Bludiste(600, 150, 20, 150))
+        platformy.push(new Bludiste(600, 150, 220, 20))
+        platformy.push(new Bludiste(800, 0, 20, 150))
 
-        platformy.push(new Dvere(1000,600,100,20))
-        platformy.push(new Dvere(500,280,100,20))
+        platformy.push(new Dvere(1000, 600, 100, 20))
+        platformy.push(new Dvere(500, 280, 100, 20))
 
-        platformy.push(new Scroll(100, 550,"sutrinfo.png"))
+        platformy.push(new Scroll(100, 550, "sutrinfo.png"))
 
-        waifus.push(new Sutr(500,500))
-        waifus.push(new Sutr(1200,300))
-        waifus.push(new Sutr(700,50))
-        waifus.push(new Sutr(800,700))
+        waifus.push(new Sutr(500, 500))
+        waifus.push(new Sutr(1200, 300))
+        waifus.push(new Sutr(700, 50))
+        waifus.push(new Sutr(800, 700))
 
-        platformy.push(new Cil(720, 750 ))
+        platformy.push(new Cil(720, 750))
     }
 
     if (lokaceLevely == 4) {
@@ -215,10 +225,54 @@ function spawny() {
     }
 
     if (lokaceLevely == 5) {
+        waifus.push(new DiceBossParek(1000, 400))
 
-        waifus.push(new DiceBossParek(1000,400))
-        
-    } 
+    }
+
+    if (lokaceLevely == 6) {
+        hrac = new Player(10, 250, 40, 40)
+
+        platformy.push(new Bludiste(0, 200, 200, 20, true))
+        platformy.push(new Bludiste(0, 400, 200, 20))
+        platformy.push(new Bludiste(200, 200, 20, 220))
+        platformy.push(new Bludiste(400, 200, 20, 300))
+        platformy.push(new Bludiste(400, 200, 400, 20))
+        platformy.push(new Bludiste(400, 500, 300, 20))
+        platformy.push(new Bludiste(700, 500, 20, 200))
+        platformy.push(new Bludiste(800, 400, 20, 400))
+        platformy.push(new Bludiste(500, 700, 220, 20))
+        platformy.push(new Bludiste(700, 700, 100, 20, true))
+        platformy.push(new Bludiste(800, 200, 20, 220))
+        platformy.push(new Bludiste(1000, 650, 200, 20))
+        platformy.push(new Bludiste(1000, 650, 20, 200))
+        platformy.push(new Bludiste(1000, 850, 350, 20))
+        platformy.push(new Bludiste(1200, 350, 20, 320))
+        platformy.push(new Bludiste(1200, 250, 200, 20, true))
+        platformy.push(new Bludiste(500, 800, 500, 20))
+        platformy.push(new Bludiste(900, 700, 100, 20))
+        platformy.push(new Bludiste(500, 600, 20, 100))
+        platformy.push(new Bludiste(1000, 250, 220, 20))
+        platformy.push(new Bludiste(1000, 250, 20, 400))
+        platformy.push(new Bludiste(400, 500, 20, 320))
+        platformy.push(new Bludiste(400, 800, 100, 20))
+        platformy.push(new Bludiste(300, 100, 20, 100))
+        platformy.push(new Bludiste(0, 500, 400, 20, true))
+
+
+        platformy.push(new Teleport(80, 250, 450, 350))
+        platformy.push(new Teleport(680, 250, 1050, 700))
+        platformy.push(new Teleport(600, 550, 1100, 500))
+
+        platformy.push(new Dvere(500, 520, 20, 80))
+        platformy.push(new Dvere(1200, 270, 20, 80))
+
+        platformy.push(new Packa(1300, 300, 220))
+        platformy.push(new Packa(1250, 400, 120))
+        platformy.push(new Packa(340, 150, 100))
+        platformy.push(new Packa(950, 750, 100))
+
+        platformy.push(new Cil(300, 850, 40, 40))
+    }
 
     else {
 
@@ -232,10 +286,16 @@ var dt = 0
 var dt2 = 0
 
 function main(timestamp) {
+    //inventar.inventory[0] = "bomba"
     dt2 = dt
     progress = timestamp - lastRender
     dt = progress / (1000 / 60)
     lastRender = timestamp
+
+    if (hybaniKlik) {
+        casKlik += dt
+    }
+
     if (spawn == 0 && spusteno && obrazovka == "hra") {
         spawny()
         spawn++
@@ -258,6 +318,13 @@ function main(timestamp) {
                     zbrane.push(new Bomba(Math.random() * 1150 + 50, Math.random() * 800 + 50))
                 }
 
+            }
+
+            if (lokaceLevely == 5) {
+                if (zbrane.length == 0 && inventar.inventory[0] == null && inventar.inventory[1] == null && inventar.inventory[2] == null && inventar.inventory[3] == null
+                    && inventar.inventory[4] == null) {
+                    zbrane.push(new Bomba(Math.random() * 1100 + 100, Math.random() * 700 + 100, 40, 40))
+                }
             }
         }
 
@@ -323,7 +390,11 @@ function main(timestamp) {
             c.globalAlpha = 0.2
             c.fillRect(0, 0, canvas.width, canvas.height)
             c.globalAlpha = 1
-            
+
+        }
+
+        else if (lokaceLevely == 5) {
+            c.drawImage(this.imagePozadi, 0, 0, canvas.width, canvas.height)
         }
         else {
             c.fillStyle = "rgb(27, 27, 27)"
@@ -331,8 +402,11 @@ function main(timestamp) {
         }
 
 
-        levelTime += 1 * dt
 
+
+        if (!dialog) {
+            levelTime += 1 * dt
+        }
         if (levelTime >= 60 && obrazovka != "victory") {
             skore++
             levelTime = 0
@@ -348,8 +422,8 @@ function main(timestamp) {
 
         for (var i in platformy) {
             if (platformy[i].type != "scroll") {
-            platformy[i].vykresleni()
-            platformy[i].kolize()
+                platformy[i].vykresleni()
+                platformy[i].kolize()
             }
         }
 
@@ -398,7 +472,7 @@ function main(timestamp) {
             waifus[i].pohnuti()
         }
 
-        
+
 
         for (var i in projektily) {
             projektily[i].vykresleni()
@@ -409,12 +483,73 @@ function main(timestamp) {
             tlacitka[i].vykresleni()
         }
 
+        for(var mazani in tlacitka) {
+            tlacitka[mazani].delete()
+        }
+
         for (var k in platformy) {
             if (platformy[k].type == "scroll") {
                 platformy[k].vykresleni()
                 platformy[k].kolize()
             }
         }
+        // Dialogy
+        if (lokaceLevely == 2 && dialog) {
+            if (dialogIndex > dialogLevel2.length - 1) {
+                dialog = false
+                dialogIndex = 0
+
+            }
+            c.fillStyle = "grey"
+            c.globalAlpha = 0.7
+            c.fillRect(0, 600, canvas.width, 300)
+            c.globalAlpha = 1
+            if (dialogLevel2[dialogIndex].postava == "4dice") {
+                c.drawImage(kostka, canvas.width - 200, 675, 150, 150)
+            }
+            if (dialogLevel2[dialogIndex].postava == "green") {
+                c.drawImage(hrac.image, 100, 715, 80, 80)
+            }
+            c.textAlign = "center"
+            c.fillStyle = "white"
+            c.font = "30px serif"
+            c.fillText(dialogLevel2[dialogIndex].text, canvas.width / 2, 750)
+            c.fillText("Press [Enter] to continue | Press [Space] to skip", canvas.width / 2, 850)
+
+        }
+        else if (lokaceLevely == 5 && dialog) {
+            if (dialogIndex > dialogLevel5.length - 1) {
+                dialog = false
+                dialogIndex = 0
+
+            }
+            if (dialogLevel5[dialogIndex].postava == "4dice") {
+                c.fillStyle = "rgb(87, 19, 19)"
+            }
+            if (dialogLevel5[dialogIndex].postava == "green") {
+                c.fillStyle = "grey"
+            }
+            c.globalAlpha = 0.7
+            c.fillRect(0, 600, canvas.width, 300)
+            c.globalAlpha = 1
+            if (dialogLevel5[dialogIndex].postava == "4dice") {
+                c.drawImage(kostka, canvas.width - 200, 675, 150, 150)
+            }
+            if (dialogLevel5[dialogIndex].postava == "green") {
+                c.drawImage(hrac.image, 100, 715, 80, 80)
+            }
+            c.textAlign = "center"
+            c.fillStyle = "white"
+            c.font = "30px serif"
+            c.fillText(dialogLevel5[dialogIndex].text, canvas.width / 2, 750)
+            c.font = "20px Arial"
+            c.fillText("Press [Enter] to continue | Press [Space] to skip", canvas.width / 2, 850)
+
+        }
+        else {
+            dialog = false
+        }
+        c.textAlign = "start"
 
         hrac.vykresleni()
         hrac.pohyb()
@@ -456,12 +591,18 @@ function main(timestamp) {
                 projektily.length = 0
             }
             if (hrac.enter) {
+                for (var vtipy in joky) {
+                    joky[vtipy].currentTime = 0
+                    joky[vtipy].pause()
+                }
                 jokeProbehl = false
                 smrt = 0
                 hrac.zivot[0] = "hp"
                 hrac = new Player(40, 40, 40, 40)
                 waifus = []
                 animace.length = 0
+                pocetItemu = 0
+                projektily.length = 0
                 platformy = []
                 zbrane = []
                 inventar = new Inventar()
@@ -479,6 +620,7 @@ function main(timestamp) {
             bazina.pause()
             kitchen.pause()
             pocetItemu = 0
+            dialog = true
             hrac = new Player(40, 40, 40, 40)
             waifus = []
             projektily.length = 0
@@ -491,7 +633,7 @@ function main(timestamp) {
             casText = 180
             screen("mainMenu")
             mainMenu()
-            
+
         }
 
 
@@ -528,6 +670,7 @@ function main(timestamp) {
         hrac = new Player(40, 40, 40, 40)
         waifus = []
         platformy = []
+        dialog = true
         animace.length = 0
         zbrane = []
         projektily.length = 0
@@ -568,6 +711,7 @@ function screen(volba) {
             tlacitka.push(new Tlacitko(525, 500, 300, 100, "xd", "Levels", 40, -10))
             tlacitka.push(new Tlacitko(525, 700, 300, 100, "xd", "Controls", 50, -10))
             tlacitka.push(new Tlacitko(1120, 800, 200, 80, "xd", "Replay", 42, -10))
+            tlacitka.push(new Tlacitko(10, 40, 50, 50, "xd", "C", 12, -12))
             break;
 
         case "hra":
@@ -623,14 +767,26 @@ function screen(volba) {
                     tlacitka.push(new Levely(100 + 430 * k, 350, 300, 200, "level" + level + ".png", false, k + 3))
                 }
                 else if (levelsCompleted < k + 3) {
-                    
+
                     tlacitka.push(new Levely(100 + 430 * k, 350, 300, 200, "level" + level + ".png", true, k + 3))
+                }
+            }
+
+            for (var s = 0; s < 1; s++) {
+                var level1 = s + 6
+                if (levelsCompleted >= s + 6) {
+                    tlacitka.push(new Levely(100 + 430 * s, 600, 300, 200, "level" + level1 + ".png", false, s + 6))
+                }
+                else if (levelsCompleted < s + 6) {
+
+                    tlacitka.push(new Levely(100 + 430 * s, 600, 300, 200, "level" + level1 + ".png", true, s + 6))
                 }
             }
             break;
 
         case "victory":
             bazina.pause()
+            kitchen.pause()
             obrazovka = "victory"
             tlacitka = []
             break;
@@ -649,6 +805,10 @@ function mainMenu() {
         c.fillText("Replay saved", 10, 30)
 
 
+    }
+
+    if (hybaniKlik) {
+        casKlik += dt
     }
 
     c.font = "60px serif"
@@ -671,12 +831,19 @@ function mainMenu() {
     for (var i in tlacitka) {
         tlacitka[i].vykresleni(i)
 
-
+    }
+    for(var mazani in tlacitka) {
+        tlacitka[mazani].delete()
     }
     if (tlacitka.length > 0) {
-        if (tlacitka[0].funguje == true && tlacitka[0].click == true) {
+        if (tlacitka[0].funguje == true && tlacitka[0].click == true && levelsCompleted < 7) {
 
             screen("hra")
+        }
+        else if (tlacitka[0].funguje == true && tlacitka[0].click == true && levelsCompleted >= 7) {
+            alert("You already reached maximal level. Stay turned for more !")
+            tlacitka[0].funguje = false
+            tlacitka[0].click = false
         }
 
         else if (tlacitka[1].funguje == true && tlacitka[1].click == true) {
@@ -691,7 +858,13 @@ function mainMenu() {
             screen("replay")
         }
 
+        else if (tlacitka[4].funguje == true && tlacitka[4].click == true) {
+            barvicka = prompt('Choose color for mouse click (typing \'random\' will make colors random, none shall disable effect)')
+            tlacitka[4].click = false
+        }
+
     }
+    /*console.log(mazaniClick)
     if (hrac.klik.x != 0 && hrac.klik.y != 0) {
         mazaniClick -= dt
     }
@@ -700,7 +873,7 @@ function mainMenu() {
         hrac.klik.x = 0
         hrac.klik.y = 0
         mazaniClick = 1
-    }
+    }*/
 
 }
 
@@ -804,6 +977,14 @@ function controls() {
     for (var b in tlacitka) {
         tlacitka[b].vykresleni()
     }
+
+    if (hybaniKlik) {
+        casKlik += dt
+    }
+
+    for(var mazani in tlacitka) {
+        tlacitka[mazani].delete()
+    }
     if (hrac.escape || tlacitka[0].click == true) {
         screen("mainMenu")
         mainMenu()
@@ -823,8 +1004,15 @@ function playReplay() {
     c.fillStyle = "lightblue"
     c.fillRect(0, 0, 1350, 900)
 
+    if (hybaniKlik) {
+        casKlik += dt
+    }
+
     for (var m in tlacitka) {
         tlacitka[m].vykresleni()
+    }
+    for(var mazani in tlacitka) {
+        tlacitka[mazani].delete()
     }
 
     if (replayPause) {
@@ -899,6 +1087,9 @@ function levels() {
     c.fillRect(0, 0, canvas.width, canvas.height)
     for (var b in tlacitka) {
         tlacitka[b].vykresleni()
+    }
+    for(var mazani in tlacitka) {
+        tlacitka[mazani].delete()
     }
 
     if (hrac.escape || tlacitka[0].click == true) {
