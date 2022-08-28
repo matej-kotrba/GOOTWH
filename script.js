@@ -100,6 +100,9 @@ addEventListener('keydown', function (e) {
     if (e.code == "Space") {
         hrac.space = true
         if (dialog) {
+            if (lokaceLevely == 2) {
+                dialogIndex = dialogLevel2.length
+            }
             if (lokaceLevely == 5) {
                 dialogIndex = dialogLevel5.length
             }
